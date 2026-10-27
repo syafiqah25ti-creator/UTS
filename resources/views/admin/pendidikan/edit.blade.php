@@ -1,0 +1,105 @@
+@extends('layouts.admin')
+
+@section('title', 'Edit Riwayat Pendidikan')
+@section('page-title', 'Edit Riwayat Pendidikan')
+
+@section('content')
+<div class="row justify-content-center">
+    <div class="col-12 col-xl-8">
+        <div class="card border-0 shadow">
+            <div class="card-header bg-white py-3 border-bottom">
+                <div class="d-flex align-items-center justify-content-between">
+                    <h5 class="mb-0 fw-bold"><i class="bi bi-pencil-square text-warning me-2"></i>Form Edit Riwayat Pendidikan</h5>
+                    <a href="{{ route('pendidikan.index') }}" class="btn btn-sm btn-outline-secondary">
+                        <i class="bi bi-arrow-left me-1"></i> Kembali
+                    </a>
+                </div>
+            </div>
+
+            <div class="card-body p-4">
+                <form action="{{ route('pendidikan.update', $pendidikan->id) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label class="form-label fw-bold">Pilih Pemilik Biodata <span class="text-danger">*</span></label>
+                            <select name="biodata_id" class="form-select @error('biodata_id') is-invalid @enderror" required>
+                                <option value="">-- Pilih Biodata --</option>
+                                @foreach($biodatas as $bio)
+                                    <option value="{{ $bio->id }}" {{ old('biodata_id', $pendidikan->biodata_id) == $bio->id ? 'selected' : '' }}>
+                                        {{ $bio->nama_lengkap }} ({{ $bio->profesi }})
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('biodata_id')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-8">
+                            <label class="form-label fw-bold">Nama Institusi / Universitas / Sekolah <span class="text-danger">*</span></label>
+                            <input type="text" name="nama_institusi" class="form-control @error('nama_institusi') is-invalid @enderror" value="{{ old('nama_institusi', $pendidikan->nama_institusi) }}" required>
+                            @error('nama_institusi')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold">Jenjang <span class="text-danger">*</span></label>
+                            <select name="jenjang" class="form-select @error('jenjang') is-invalid @enderror" required>
+                                <option value="">-- Jenjang --</option>
+                                @foreach(['SMA/SMK', 'D3', 'D4', 'S1', 'S2'] as $j)
+                                    <option value="{{ $j }}" {{ old('jenjang', $pendidikan->jenjang) == $j ? 'selected' : '' }}>{{ $j }}</option>
+                                @endforeach
+                            </select>
+                            @error('jenjang')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Jurusan / Program Studi <span class="text-danger">*</span></label>
+                            <input type="text" name="jurusan" class="form-control @error('jurusan') is-invalid @enderror" value="{{ old('jurusan', $pendidikan->jurusan) }}" required>
+                            @error('jurusan')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label fw-bold">Tahun Masuk <span class="text-danger">*</span></label>
+                            <input type="text" name="tahun_masuk" class="form-control @error('tahun_masuk') is-invalid @enderror" value="{{ old('tahun_masuk', $pendidikan->tahun_masuk) }}" required>
+                            @error('tahun_masuk')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label fw-bold">Tahun Lulus <span class="text-danger">*</span></label>
+                            <input type="text" name="tahun_lulus" class="form-control @error('tahun_lulus') is-invalid @enderror" value="{{ old('tahun_lulus', $pendidikan->tahun_lulus) }}" required>
+                            @error('tahun_lulus')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label fw-bold">Deskripsi Tambahan / Capaian</label>
+                            <textarea name="deskripsi" rows="3" class="form-control @error('deskripsi') is-invalid @enderror">{{ old('deskripsi', $pendidikan->deskripsi) }}</textarea>
+                            @error('deskripsi')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-3 border-top d-flex justify-content-end gap-2">
+                        <a href="{{ route('pendidikan.index') }}" class="btn btn-secondary">Batal</a>
+                        <button type="submit" class="btn btn-success">
+                            <i class="bi bi-save me-1"></i> Perbarui Riwayat
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
